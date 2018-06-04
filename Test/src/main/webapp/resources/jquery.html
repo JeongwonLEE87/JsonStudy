@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JQuery</title>
+	<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			console.log("ready()");
+			$.ajax({url: "/test/json"})
+			  .done(function(data) {
+				  var d = JSON.parse(data)
+					console.log(d.key);
+				  	console.log(d);
+			  });
+		});
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

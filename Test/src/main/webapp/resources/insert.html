@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>입력화면</title>
+</head>
+<body>
+	<form action="/test/board/insert">
+		<input type="text" name="title" placeholder="제목"><br>
+		<input type="text" name="content" placeholder="내용"><br>
+<!-- 		<input type="text" name="regUser" placeholder="사용자 번호"><br> -->
+		<select name="regUser">
+			<option value="1">관리자</option>
+			<option value="2">구디</option>
+			<option value="3">김경빈</option>
+		</select><br>
+		<input type="submit" value="작성">
+		<a href="/test/board/selectList">돌아가기</a>
+	</form>
+</body>
+</html>
