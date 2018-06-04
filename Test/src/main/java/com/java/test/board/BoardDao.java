@@ -22,12 +22,13 @@ public class BoardDao implements BoardDaoInterface {
 		HashMap<String, Object> result = new HashMap<String, Object>();  // 리턴값 사용할 지역 변수 생성
 		
 		
-		logger.debug(param);
-		System.out.println(param);
+		System.out.println("dao layer board() param="+param);
 		
 		if("selectList".equals(param.get("type"))) {
+			System.out.println(" Dao Layer selectList ");
 			result.put("result", session.selectList(param.get("menu")+".selectList"));
 		}else if("selectOne".equals(param.get("type"))) {
+			System.out.println(" Dao Layer selectOne ");
 			result.put("result", session.selectOne(param.get("menu")+".selectOne", param.get("param")));
 		}else if("insert".equals(param.get("type"))) {
 			result.put("result", session.insert(param.get("menu")+".insert", param.get("param")));
@@ -36,6 +37,8 @@ public class BoardDao implements BoardDaoInterface {
 		}else if("delete".equals(param.get("type"))) {
 			result.put("result", session.update(param.get("menu")+".delete", param.get("param")));
 		}
+		
+		System.out.println(" :: before dao out :: "+result);
 		
 		return result;
 	}

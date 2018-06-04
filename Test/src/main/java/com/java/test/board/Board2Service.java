@@ -74,14 +74,30 @@ public class Board2Service implements Board2ServiceInterface {
 			mav.setViewName("redirect:selectList");
 		}else if("delete".equals(type)) {
 			mav.setViewName("redirect:selectList");
-		}else if("insertView".equals(type)) {
-			mav.setViewName("redirect:/resources/insert.html");
 		}
 		
 		
 		System.out.println("ServiceMnV param="+param);
 		mav.addObject("data", bdi.board(param));
 		return mav;
+	}
+
+	@Override
+	public ModelAndView getJson(String menu, String type, HttpServletRequest req) {
+		mav = new ModelAndView();
+		
+		param = new HashMap<String, Object>();
+		param.put("menu", menu);
+		param.put("type", type);
+		param.put("param", HttpUtil.getParamMap(req));
+		
+		if("updateView".equals(type)) {
+			param.put("type", "selectOne");
+		}
+		
+		System.out.println("getJson method / menu="+menu+", type="+type);
+		
+		return HttpUtil.makeJsonView(bdi.board(param));
 	}
 	
 	

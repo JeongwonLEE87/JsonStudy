@@ -8,4 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 public interface Board2ServiceInterface {
 	public String board(String type, HttpServletRequest req, Model model);
 	public ModelAndView boardMnV(String menu, String type, HttpServletRequest req);
+	
+	public ModelAndView getJson(String menu, String type, HttpServletRequest req);
+//	public void getJson2(String menu, String type, HttpServletRequest req);
 }

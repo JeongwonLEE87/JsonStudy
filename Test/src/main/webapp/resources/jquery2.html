@@ -10,13 +10,15 @@
 			$.ajax({url: "/test/json/board/selectList"})
 			  .done(function(data) {
 				  var d = JSON.parse(data)
-					console.log(d.key);
-				  	console.log(d);
-			  });
+				  var dd = d.result;
+				  for(var i=0; i<dd.length; i++){
+					  $("#list").append("<li><a href='/test/board/selectOne?boardNo="+dd[i].boardNo+"'>"+dd[i].title+"</a></li>")
+				  }
+			});
 		});
 	</script>
 </head>
 <body>
-	
+	<ul id="list"></ul>
 </body>
 </html>

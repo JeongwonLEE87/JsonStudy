@@ -9,18 +9,38 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.java.test.util.HttpUtil;
+
 
 @Controller
-@RequestMapping("/view")
 public class Board2Controller {
 	
 	@Autowired
 	Board2ServiceInterface bsi; // BoardService 사용 할 수 있도록 주입 받기.
 	
-	@RequestMapping("/{menu}/{type}")
+	@RequestMapping("/view/{menu}/{type}")
 	public ModelAndView boardMnV(@PathVariable("menu") String menu,
 								@PathVariable("type") String type, HttpServletRequest req) {
 		return bsi.boardMnV(menu, type, req);
+	}
+	
+	@RequestMapping("/json/{menu}/{type}")
+	public ModelAndView jsonMnV(@PathVariable("menu") String menu,
+								@PathVariable("type") String type, HttpServletRequest req) {
+		return bsi.getJson(menu, type, req);
+	}
+	
+	@RequestMapping("/board/{type}")
+	public String json(@PathVariable("type") String type,
+					HttpServletRequest req, Model model) {
+		
+		String view = "";
+		if("selectOne".equals(type)) {
+			view = "json/boardOne";
+			model.addAttribute("QueryString", HttpUtil.getParamMap(req));
+		}
+		
+		return view;
 	}
 	
 }

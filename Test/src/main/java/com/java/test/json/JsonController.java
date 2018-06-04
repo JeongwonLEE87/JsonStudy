@@ -7,35 +7,26 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import com.java.test.util.HttpUtil;
 
 @Controller
 public class JsonController {
 
 	@RequestMapping("/json")
-	public String getJson(Model model) {
+	public ModelAndView getJson(Model model) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("key", "value");
 		
-		JSONObject j = new JSONObject();
-		j = JSONObject.fromObject(JSONSerializer.toJSON(map));
-		
-		model.addAttribute("json", j);
-		return "json";
+		return HttpUtil.makeJsonView(map);
 	}
 	
 	@RequestMapping("/json2")
-	public String getJson2(HttpServletResponse res) {
+	public void getJson2(HttpServletResponse res) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("key", "value");
-		
-		JSONObject j = new JSONObject();
-		j = JSONObject.fromObject(JSONSerializer.toJSON(map));
-		
-		
-		return "json";
+		map.put("key", "value2");
+		HttpUtil.makeJsonWriter(res, map);
 	}
 }
