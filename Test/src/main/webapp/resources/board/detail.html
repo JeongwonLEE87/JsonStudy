@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>detail</title>
+<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/test/resources/js/common.js"></script>
+<script>
+		$(document).ready(function(){
+			var boardNo = getCookie("boardNo");
+			
+			console.log("detail");
+			console.log(boardNo);
+			console.log("detail",boardNo);
+			
+			delCookie("boardNo");		
+			var data = {"boardNo" : boardNo};
+			
+			$.ajax({
+				url : "/test/json/board/selectOne",
+				data : data
+			}).done(function(data) {
+				  var d = JSON.parse(data)
+				  var dd = d.result;
+				  $("#title").text(dd.title);
+				  $("#content").text(dd.content);
+			});
+			
+			$("#update").on("click", function(){
+				console.log("update!");
+				setCookie("boardNo", boardNo);
+				location.href="/test/resources/board/update.html";
+			});
+			
+		});
+</script>
+</head>
+<body>
+	<h1 id="title"></h1>
+	<p id="content"></p>
+	<hr>
+	<a href="/test/resources/board/list.html">목록</a>
+	<a href="#" id="update">수정</a>
+	<a href="#">삭제</a>
+</body>
+</html>

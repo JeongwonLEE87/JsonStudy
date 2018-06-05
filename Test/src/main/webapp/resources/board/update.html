@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>insert</title>
+<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/test/resources/js/common.js"></script>
+<script>
+		$(document).ready(function(){
+			var boardNo = getCookie("boardNo");
+			console.log(boardNo);
+			delCookie("boardNo");
+			
+			var data = {"boardNo": boardNo}
+			
+			if(boardNo == ""){
+				alert("폐지된 페이지입니다.");
+				location.href = "/test/resources/board/list.html";
+			}else{
+				$.ajax({
+					url: "/test/json/board/selectOne",
+					data: data
+				}).done(function(data){
+					var d = JSON.parse(data);
+					var dd = d.result;
+					
+					console.log(d);
+					
+					$("#title").val(dd.title);
+					$("#content").val(dd.content);
+					$("#regUser").val(dd.regUser);
+				});
+			}
+			
+			$("form").submit(function(event){
+				event.preventDefault();
+				console.log("form submit!");
+				
+				var title = $("#title").val();
+				var content = $("#content").val();
+				var regUser = $("#regUser").val();
+				var boardNo = data.boardNo;
+				
+//			 	console.log(title, content, regUser);
+				
+				/* ================================ */
+				if(title == ""){
+					alert("제목을 입력하세요.");
+					return false;
+				}
+				
+				if(content == ""){
+					alert("내용을 입력하세요.");
+					return false;
+				}
+				
+				/* ================================ */
+				
+				var d = {
+					"title":title,
+					"content":content,
+					"regUser":regUser,
+					"boardNo":boardNo
+				};
+				
+				$.ajax({
+					url: "/test/json/board/update",
+					data: d, 
+				}).done(function(data){
+					console.log(data);
+					var jsonData = JSON.parse(data);
+					if(jsonData.result == 1){
+						alert("성공!");
+						setCookie("boardNo", boardNo);
+ 						location.href = "/test/resources/board/detail.html";
+					}else{
+						alert("실패!");
+					}
+				});
+			});
+		});
+</script>
+</head>
+<body>
+	<form>
+		<input type="text" name="title" id="title" placeholder="제목" value=""><br>
+		<input type="text" name="content" id="content" placeholder="내용" value=""><br>
+		<select name="regUser" id="regUser">
+			<option value="1">관리자</option>
+			<option value="2">구디</option>
+			<option value="3">김경빈</option>
+		</select><br>
+		<input type="submit" value="작성">
+		<a href="/test/resources/board/list.html">목록</a>
+	</form>
+
+</body>
+</html>

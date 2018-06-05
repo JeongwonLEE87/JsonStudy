@@ -35,9 +35,12 @@ public class Board2Controller {
 					HttpServletRequest req, Model model) {
 		
 		String view = "";
+		model.addAttribute("QueryString", HttpUtil.getParamMap(req));
 		if("selectOne".equals(type)) {
 			view = "json/boardOne";
-			model.addAttribute("QueryString", HttpUtil.getParamMap(req));
+		}else if("update".equals(type)) {
+			view = "json/boardUpdate";
+			
 		}
 		
 		return view;

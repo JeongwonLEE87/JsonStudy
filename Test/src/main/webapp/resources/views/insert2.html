@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>입력화면</title>
 <script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/test/resources/js/common.js"></script>
 
 </head>
 <body>
@@ -28,18 +29,18 @@ $("form").submit(function(event){
 	var content = $("#content").val();
 	var regUser = $("#regUser").val();
 	
-	console.log(title, content, regUser);
+// 	console.log(title, content, regUser);
 	
 	/* ================================ */
-// 	if(title == ""){
-// 		alert("제목을 입력하세요.");
-// 		return false;
-// 	}
+	if(title == ""){
+		alert("제목을 입력하세요.");
+		return false;
+	}
 	
-// 	if(content == ""){
-// 		alert("내용을 입력하세요.");
-// 		return false;
-// 	}
+	if(content == ""){
+		alert("내용을 입력하세요.");
+		return false;
+	}
 	
 	/* ================================ */
 	
@@ -49,22 +50,11 @@ $("form").submit(function(event){
 		"regUser":regUser
 	};
 	
-	console.log("파라미터 값:",d);
-	
 	$.ajax({
 		url: "/test/json/board/insert",
 		data: d, 
 	}).done(function(data){
-		console.log(data);
-		var dd = JSON.parse(data);
-		var status = dd.result;
-		
-		if(status == 1){
-			alert("성공");
-			location.href = "/test/resources/views/boardList.html"
-		}else if(dd.status == 0){
-			alert(dd.msg);
-		}
+		i_d(data);
 	});
 });
 </script>

@@ -23,9 +23,8 @@ public class HttpUtil {
     			System.out.println("값이 비어 있습니다.");
     			result = null;
     			break;
-    		} else {
-    			result.put(paramName, req.getParameter(paramName));
     		}
+   			result.put(paramName, req.getParameter(paramName));
     	}
     	return result;
     }

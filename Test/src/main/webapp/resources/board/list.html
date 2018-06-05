@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>list</title>
+<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/test/resources/js/common.js"></script>
+<script>
+		$(document).ready(function(){
+			var dd = [];
+			$.ajax({url: "/test/json/board/selectList"})
+			  .done(function(data) {
+				  var d = JSON.parse(data)
+				  dd = d.result;
+				  
+				  $("#list").empty();
+				  
+				  for(var i = 0; i < dd.length; i++){
+					  $("#list").append("<li>" + dd[i].title + "</li>")
+				  }
+				  
+				  $("#list li").on("click", function(){
+					  var index = $("#list li").index($(this));
+					  var boardNo = dd[index].boardNo;
+					  setCookie("boardNo", boardNo);
+					  location.href = "/test/resources/board/detail.html";
+				  });
+			  });
+		});
+</script>
+<style>
+	li {cursor: pointer;}
+</style>
+</head>
+<body>
+	<a href="/test/resources/board/insert.html">작성</a>
+	<ul id="list"></ul>
+</body>
+</html>

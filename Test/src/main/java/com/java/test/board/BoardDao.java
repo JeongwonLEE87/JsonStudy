@@ -25,16 +25,19 @@ public class BoardDao implements BoardDaoInterface {
 		System.out.println("dao layer board() param="+param);
 		
 		if("selectList".equals(param.get("type"))) {
-			System.out.println(" Dao Layer selectList ");
+			System.out.println(" Dao Layer ++selectList++ ");
 			result.put("result", session.selectList(param.get("menu")+".selectList"));
 		}else if("selectOne".equals(param.get("type"))) {
-			System.out.println(" Dao Layer selectOne ");
+			System.out.println(" Dao Layer ++selectOne++ ");
 			result.put("result", session.selectOne(param.get("menu")+".selectOne", param.get("param")));
 		}else if("insert".equals(param.get("type"))) {
+			System.out.println(" Dao Layer ++insert++");
 			result.put("result", session.insert(param.get("menu")+".insert", param.get("param")));
 		}else if("update".equals(param.get("type"))) {
+			System.out.println(" Dao Layer ++update++");
 			result.put("result", session.update(param.get("menu")+".update", param.get("param")));
 		}else if("delete".equals(param.get("type"))) {
+			System.out.println(" Dao Layer ++delete++");
 			result.put("result", session.update(param.get("menu")+".delete", param.get("param")));
 		}
 		
