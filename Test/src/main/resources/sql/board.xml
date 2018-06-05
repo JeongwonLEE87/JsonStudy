@@ -11,9 +11,9 @@
   </select>
   <insert id="insert" parameterType="HashMap">
   	insert into board 
-  			(title, content, regUser, regDate) 
+  			(title, content, regUser) 
     values
-           (#{title}, #{content}, #{regUser}, '20180531')
+           (#{title}, #{content}, #{regUser})
   </insert>
   <update id="update" parameterType="HashMap">
   	update board 

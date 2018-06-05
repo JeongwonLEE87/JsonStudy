@@ -26,24 +26,20 @@ public class Board2Service implements Board2ServiceInterface {
 		
 		param = new HashMap<String, Object>();
 		param.put("type", type);
+		param.put("param", HttpUtil.getParamMap(req));
 		
 		if("selectList".equals(type)) {
 			view = "boardList";
 		}else if("selectOne".equals(type)) {
-			param.put("param", HttpUtil.getParamMap(req));
 			view = "boardOne";
 		}else if("insert".equals(type)) {
-			param.put("param", HttpUtil.getParamMap(req));
 			view = "redirect:selectList";
 		}else if("updateView".equals(type)) {
 			param.put("type", "selectOne");
-			param.put("param", HttpUtil.getParamMap(req));
 			view = "updateView";
 		}else if("update".equals(type)) {
-			param.put("param", HttpUtil.getParamMap(req));
 			view = "redirect:selectList";
 		}else if("delete".equals(type)) {
-			param.put("param", HttpUtil.getParamMap(req));
 			view = "redirect:selectList";
 		}
 
@@ -59,7 +55,7 @@ public class Board2Service implements Board2ServiceInterface {
 		param = new HashMap<String, Object>();
 		param.put("menu", menu);
 		param.put("type", type);
-		param.put("param", HttpUtil.getParamMap(req));
+		
 		
 		if("selectList".equals(type)) {
 			mav.setViewName("boardList");
@@ -89,15 +85,30 @@ public class Board2Service implements Board2ServiceInterface {
 		param = new HashMap<String, Object>();
 		param.put("menu", menu);
 		param.put("type", type);
-		param.put("param", HttpUtil.getParamMap(req));
-		
 		if("updateView".equals(type)) {
 			param.put("type", "selectOne");
 		}
 		
+		HashMap<String, Object> map = HttpUtil.getParamMap(req);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		System.out.println("service layer map: "+map);
+		
+		if("updateView".equals(type)) {param.put("type", "selectOne");}
+		
+		if( map == null) {
+			System.out.println("null 값이 옴!");
+			result.put("status", 0);
+			result.put("msg", "입력값이 없습니다.");
+		}else {
+			param.put("param", map);
+			result = bdi.board(param);
+			result.put("status", 1);
+		}
+		
 		System.out.println("getJson method / menu="+menu+", type="+type);
 		
-		return HttpUtil.makeJsonView(bdi.board(param));
+		return HttpUtil.makeJsonView(result);
 	}
 	
 	

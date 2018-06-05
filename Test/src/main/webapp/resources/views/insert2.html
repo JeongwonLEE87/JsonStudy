@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>입력화면</title>
+<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+
+</head>
+<body>
+	<form action="#">
+		<input type="text" id="title" name="title" placeholder="제목"><br>
+		<input type="text" id="content" name="content" placeholder="내용"><br>
+<!-- 		<input type="text" name="regUser" placeholder="사용자 번호"><br> -->
+		<select id="regUser" name="regUser">
+			<option value="1">관리자</option>
+			<option value="2">구디</option>
+			<option value="3">김경빈</option>
+		</select><br>
+		<input type="submit" value="작성">
+		<a href="/test/resources/views/jquery2.html">돌아가기</a>
+	</form>
+<script>
+$("form").submit(function(event){
+	event.preventDefault();
+	console.log("form submit!");
+	
+	var title = $("#title").val();
+	var content = $("#content").val();
+	var regUser = $("#regUser").val();
+	
+	console.log(title, content, regUser);
+	
+	/* ================================ */
+// 	if(title == ""){
+// 		alert("제목을 입력하세요.");
+// 		return false;
+// 	}
+	
+// 	if(content == ""){
+// 		alert("내용을 입력하세요.");
+// 		return false;
+// 	}
+	
+	/* ================================ */
+	
+	var d = {
+		"title":title,
+		"content":content,
+		"regUser":regUser
+	};
+	
+	console.log("파라미터 값:",d);
+	
+	$.ajax({
+		url: "/test/json/board/insert",
+		data: d, 
+	}).done(function(data){
+		console.log(data);
+		var dd = JSON.parse(data);
+		var status = dd.result;
+		
+		if(status == 1){
+			alert("성공");
+			location.href = "/test/resources/views/boardList.html"
+		}else if(dd.status == 0){
+			alert(dd.msg);
+		}
+	});
+});
+</script>
+</body>
+</html>

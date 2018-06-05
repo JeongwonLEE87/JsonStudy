@@ -14,11 +14,18 @@ import net.sf.json.JSONSerializer;
 public class HttpUtil {
 	public static HashMap<String, Object> getParamMap(HttpServletRequest req){
     	HashMap<String, Object> result = new HashMap<String, Object>();
-    	
     	Enumeration<?> enums = req.getParameterNames();
     	while(enums.hasMoreElements()) {
     		String paramName = enums.nextElement().toString();
-    		result.put(paramName, req.getParameter(paramName));
+    		
+    		System.out.println("param: "+req.getParameter(paramName));
+    		if("".equals(req.getParameter(paramName))) {
+    			System.out.println("값이 비어 있습니다.");
+    			result = null;
+    			break;
+    		} else {
+    			result.put(paramName, req.getParameter(paramName));
+    		}
     	}
     	return result;
     }
