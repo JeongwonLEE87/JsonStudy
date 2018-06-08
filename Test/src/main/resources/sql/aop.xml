@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="aop">
+ 	<insert id="insert" parameterType="HashMap" >
+ 		insert into aop 
+			(methodNm, menu, `type`)
+		values
+			(#{methodNm}, #{menu}, #{type})
+ 	</insert>
+ 	<select id="select" resultType="HashMap" >
+ 		select methodNm,
+			   menu,
+			   type,
+			   count(*) as cnt
+		from aop
+		group by methodNm, 
+				 menu,
+				 type;
+ 	</select>
+ 	
+ </mapper>

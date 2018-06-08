@@ -11,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.java.test.util.HttpUtil;
 
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+
 @Service
 public class Board2Service implements Board2ServiceInterface {
 
@@ -80,7 +83,6 @@ public class Board2Service implements Board2ServiceInterface {
 
 	@Override
 	public ModelAndView getJson(String menu, String type, HttpServletRequest req) {
-		mav = new ModelAndView();
 		
 		param = new HashMap<String, Object>();
 		param.put("menu", menu);
@@ -108,7 +110,17 @@ public class Board2Service implements Board2ServiceInterface {
 		
 		System.out.println("getJson method / menu="+menu+", type="+type);
 		
-		return HttpUtil.makeJsonView(result);
+		ModelAndView mav = new ModelAndView();
+		JSONObject j = new JSONObject();
+		j = JSONObject.fromObject(JSONSerializer.toJSON(result));
+		mav.addObject("json", j);
+		mav.setViewName("json");
+		
+		System.out.println(mav);
+		System.out.println(mav.getModel());
+		
+//		return HttpUtil.makeJsonView(result);
+		return mav;
 	}
 	
 	

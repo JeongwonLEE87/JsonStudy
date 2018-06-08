@@ -68,11 +68,23 @@
 					data: d, 
 				}).done(function(data){
 					console.log(data);
+					
+					
 					var jsonData = JSON.parse(data);
+					
+					console.log("1:",jsonData);
+					
+					console.log("2:",jsonData.json);
+					
+					console.log("3:",jsonData.result);
+					
+					return false;
+					
+					
 					if(jsonData.result == 1){
-						alert("성공!");
+// 						alert("성공!");
 						setCookie("boardNo", boardNo);
- 						location.href = "/test/resources/board/detail.html";
+//  						location.href = "/test/resources/board/detail.html";
 					}else{
 						alert("실패!");
 					}
