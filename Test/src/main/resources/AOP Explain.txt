@@ -1,0 +1,73 @@
+- AOP (Aspect Oriented Programming): 관점 지향 프로그래밍
+
+AOP 용어 정리
+Aspect      : 공통 기능
+Advice      : Aspect의 기능 자체
+Joinpoint   : Advice를 적용해야 되는 부분 (메소드) <- 스프링은 메소드만
+Pointcut    : Joinpoint의 부분으로 실제로 Advice가 적용되는 부분
+Weaving     : Advice를 핵심 기능에 적용 하는 행위
+
+- 스프링에서 AOP 구현방법: proxy 사용
+: 호출부(client)-> 대행(Proxy)-> 핵심기능(Target)
+
+- 스프링에서 AOP 구현 방식
+xml 스키마 기반의 AOP 구현
+@Aspect 어노테이션 기반의 AOP 구현
+
+1. xml 기반의 AOP 구현
+ 1) pom.xml으로 의존 설정
+ 2) 공통 기능의 class 제작 -Advice 역할 class (스프링 기반 패키지에)
+ 3) xml 설정 파일에 Aspect 설정
+
+2. 범위작성
+ 1) within(com.java.test.*): 패키지 안에 모든 메소드
+ 2) within(com.java..*): 패키지 및 하위 패키지 안에 있는 모든 메소드
+ 3) within(com.java.test.User): User class의 모든 메소드
+
+
+* Annotation 기반으로 설정할땐 context.xml에 aop:aspectj-autoproxy 설정과
+    aop class의 DI 가 필요하다.
+    ** AOP Before와 After의 흐름
+    함수시작! around 실행
+    return value 기준으로 before after 실행
+
+3. 사용한 종류
+ 1) JoinPoint 인터페이스는 호출되는 대상 객체, 메서드 그리고 전달되는 파라미터 목록에 접근할 수 있는 메서드를 제공
+    * Signature getSignature() - 호출되는 메서드에 대한 정보를 구함
+    * Object getTarget() - 대상 객체를 구함
+    * Object[] getArgs() - 파라미터 목록을 구함
+
+ 2) org.aspectj.lang.Signature 인터페이스는 호출되는 메서드와 관련된 정보를 구하기 위해 관련된 메서드를 제공
+    * String getName() - 메서드의 이름을 구함
+    * String toShoutString() - 메서드를 완전하게 표현한 문장을 구함(메서드의 리턴 타입, 파라미터 타입 모두 표시)
+    * String toLongString() - 메서드를 축약해서 표현한 문장을 구함(메서드의 이름만 구함)
+
+4. AspectJ Pointcut 표현식
+ 1) Execution
+    : @Pointcut("excution(public void get*(..))")
+        < - public void인 모든 get메소드
+    : @Pointcut("excution(* com.java.*.*())")
+        < - com.java 패키지에 파라미터가 없는 모든 메소드
+    : @Pointcut("excution(* com.java.User.*())")
+        <- com.java.User 안의 모든 메소드
+
+ 2) within
+    : @Pointcut("within(com.java.*")
+        <- com.java 패키지 안의 모든 메소드만
+    : @Pointcut("within(com.java..*)")
+        <- com.java 패키지 및 하위 패키지 안에 있는 모든 메소드
+    : @Pointcut("within(com.java.User)")
+        <- com.java.User 안의 모든 메소드
+
+ 3) bean
+    : @Pointcut("bean(User)") <- User 빈에만 적용
+    : @Pointcut("bean(*ser)") <- ~ser로 끝나는 빈에만 적용
+
+* AOP 사용하는 목적:
+ 어떤 곳에 어떤 빈도로 접속하는지 체크할 수 있다.
+ 어떤 인입점으로 트래픽이 몰리는지 체크 할 수 있다.
+
+** 주의 **
+ @Around("within(범위)") method에서의 리턴값과
+ @RequestMapping("/범위가 작동하는 URI") 의 리턴값을
+ 맞춰줘야 @Around AOP 수행후 리턴값이 적용 될 수 있다.

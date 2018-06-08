@@ -7,12 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.java.test.util.HttpUtil;
 
 @Aspect
 public class LoginAOP {
 
+	@Autowired
+	LoginAOPInterface lai;
+	
 	@Around("within(com.java.test.user.UserController)")
 	public Object loginCheck(ProceedingJoinPoint jp) {
 		
@@ -27,18 +31,35 @@ public class LoginAOP {
 				HashMap<String, Object> params = HttpUtil.getParamMap(req);
 				String id = params.get("id").toString();
 				String pwd = params.get("pwd").toString();
+				params.put("pass", pwd);
 				
 				System.out.println("inputId: "+id+", inputPwd: "+pwd);
+				System.out.println("LoginAOP params: "+params);
 				
-				boolean check = true;
+				HashMap<String, Object> resultMap = lai.loginCheck(params);
 				
-				if(!"admin".equals(id)) {
+				System.out.println("LoginAOP resultMap: "+resultMap);
+				
+				
+				boolean check = false;
+				
+				if(resultMap == null) {
+					
+					System.out.println("resultMap is null");
+					
 					check = false;
+				} else {
+					
+					System.out.println("resultMap is not null");
+					if(resultMap.get("id").equals(id)) {
+						System.out.println("resultMap id is equal");
+						if(resultMap.get("pass").equals(pwd)) {
+							System.out.println("resultMap pass is equal");
+							check = true;
+						}
+					}
 				}
 				
-				if(!"1234".equals(pwd)) {
-					check = false;
-				}
 				
 				if(check) {
 					try {
